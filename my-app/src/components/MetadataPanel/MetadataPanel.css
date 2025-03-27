@@ -1,0 +1,124 @@
+/* components/MetadataPanel/MetadataPanel.css */
+.metadata-panel {
+    background: var(--card-bg, #ffffff);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    margin: 1rem;
+    max-width: 800px;
+    transition: all 0.3s ease;
+}
+
+.metadata-panel.empty {
+    text-align: center;
+    color: var(--text-secondary, #666);
+    padding: 2rem;
+}
+
+.metadata-header {
+    border-bottom: 2px solid var(--border-color, #eee);
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.title {
+    font-size: 1.5rem;
+    margin: 0 0 0.5rem;
+    color: var(--text-primary, #333);
+}
+
+.quick-stats {
+    display: flex;
+    gap: 1.5rem;
+    color: var(--text-secondary, #666);
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.metadata-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.metadata-item {
+    padding: 0.8rem;
+    background: var(--metadata-bg, #f8f8f8);
+    border-radius: 8px;
+}
+
+.metadata-item.full-width {
+    grid-column: 1 / -1;
+}
+
+.metadata-label {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--text-secondary, #666);
+    margin-bottom: 0.3rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.metadata-value {
+    margin: 0;
+    color: var(--text-primary, #333);
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+.description-text {
+    max-height: 150px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+}
+
+.tags-section {
+    margin-top: 1.5rem;
+}
+
+.tags-heading {
+    font-size: 1.1rem;
+    margin: 0 0 1rem;
+    color: var(--text-primary, #333);
+}
+
+.tag-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.tag-pill {
+    background: var(--tag-bg, #e0e0e0);
+    color: var(--tag-text, #333);
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    transition: all 0.2s ease;
+}
+
+.tag-pill:hover {
+    background: var(--tag-hover-bg, #d0d0d0);
+    transform: translateY(-1px);
+}
+
+@media (max-width: 768px) {
+    .metadata-panel {
+        margin: 1rem 0;
+    }
+
+    .metadata-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .title {
+        font-size: 1.3rem;
+    }
+}
