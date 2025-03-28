@@ -16,13 +16,13 @@ const Survey = ({ onClose, onComplete, thumbnail }) => {
   const questions = [
     {
       id: 'initialImpression',
-      question: "What was your first impression when you saw this thumbnail?",
+      question: "What caught your eye first?",
       type: 'text',
-      placeholder: "e.g., Professional, engaging, mysterious..."
+      placeholder: "Share your first impression..."
     },
     {
       id: 'attentionGrabbers',
-      question: "What elements caught your attention first?",
+      question: "Select the elements that stood out",
       type: 'multiselect',
       options: [
         'Title text',
@@ -35,7 +35,7 @@ const Survey = ({ onClose, onComplete, thumbnail }) => {
     },
     {
       id: 'emotionalResponse',
-      question: "How did this thumbnail make you feel?",
+      question: "How did this make you feel?",
       type: 'select',
       options: [
         'Curious',
@@ -47,27 +47,27 @@ const Survey = ({ onClose, onComplete, thumbnail }) => {
     },
     {
       id: 'relevance',
-      question: "How relevant did you find this content to your interests?",
+      question: "Rate the relevance to your interests",
       type: 'rating',
       max: 5
     },
     {
       id: 'trustworthiness',
-      question: "How trustworthy did you find this thumbnail?",
+      question: "How trustworthy does this appear?",
       type: 'rating',
       max: 5
     },
     {
       id: 'additionalFactors',
-      question: "What other factors influenced your decision to click?",
+      question: "What influenced your decision?",
       type: 'multiselect',
       options: [
-        'Thumbnail quality',
-        'Professional appearance',
+        'Quality',
+        'Professional look',
         'Clickbait potential',
-        'Content clarity',
+        'Clear content',
         'Brand recognition',
-        'Social proof (views/likes)'
+        'Social proof'
       ]
     }
   ];
