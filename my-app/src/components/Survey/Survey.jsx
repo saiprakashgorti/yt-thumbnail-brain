@@ -1,5 +1,8 @@
 // src/components/Survey.jsx
 import React, { useState } from 'react';
+import firebaseConfig from '../../firebase/config';
+import { db } from "../../firebase/db";
+import { collection, addDoc } from "firebase/firestore";
 import './Survey.css';
 
 const Survey = ({ onClose, onComplete, thumbnail }) => {
@@ -93,16 +96,20 @@ const Survey = ({ onClose, onComplete, thumbnail }) => {
     }
   };
 
-  const handleSubmit = () => {
-    // Save answers to localStorage
-    const savedAnswers = JSON.parse(localStorage.getItem('surveyAnswers') || '[]');
-    savedAnswers.push({
-      thumbnailId: thumbnail.id,
-      timestamp: new Date().toISOString(),
-      ...answers
-    });
-    localStorage.setItem('surveyAnswers', JSON.stringify(savedAnswers));
-
+  const handleSubmit = async () => {
+    // Save answers to Firestore
+    console.log('Storing answers to Firestore');
+    console.log(firebaseConfig);
+    try {
+      await addDoc(collection(db, "user_study"), {
+        thumbnailId: thumbnail.id,
+        timestamp: new Date().toISOString(),
+        ...answers
+      });
+    } catch (error) {
+      console.error("Error adding document: ", error);
+    }
+    
     // Call the onComplete callback with the answers
     onComplete(answers);
     // Refresh the page
