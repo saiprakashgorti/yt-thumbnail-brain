@@ -10,7 +10,7 @@
     overflow-y: auto;
     justify-content: center;
     align-content: start;
-    background-color: #0a0a0a;
+    background-color: inherit;
     color: #ffffff;
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.1) transparent;

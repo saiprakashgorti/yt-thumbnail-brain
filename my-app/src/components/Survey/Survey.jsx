@@ -13,7 +13,6 @@ const Survey = ({ onClose, onComplete, thumbnail }) => {
     additionalFactors: []
   });
 
-
   const questions = [
     {
       id: 'initialImpression',
@@ -104,7 +103,6 @@ const Survey = ({ onClose, onComplete, thumbnail }) => {
     });
     localStorage.setItem('surveyAnswers', JSON.stringify(savedAnswers));
 
-
     // Call the onComplete callback with the answers
     onComplete(answers);
     // Refresh the page
@@ -184,30 +182,39 @@ const Survey = ({ onClose, onComplete, thumbnail }) => {
     <div className="survey-overlay">
       <div className="survey-modal">
         <button className="close-button" onClick={onClose}>×</button>
-        <div className="survey-content">
-          <div className="survey-progress">
-            <div
-              className="progress-bar"
-              style={{ width: `${((currentStep + 1) / questions.length) * 100}%` }}
+        <div className="survey-layout">
+          <div className="survey-thumbnail-container">
+            <img
+              src={`/thumbnails/${thumbnail.thumbnailFile}`}
+              alt="Selected thumbnail"
+              className="survey-thumbnail"
             />
           </div>
-          <h2>{questions[currentStep].question}</h2>
-          {renderQuestion()}
-          <div className="survey-navigation">
-            {currentStep > 0 && (
-              <button className="nav-button back" onClick={handleBack}>
-                Back
+          <div className="survey-content">
+            <div className="survey-progress">
+              <div
+                className="progress-bar"
+                style={{ width: `${((currentStep + 1) / questions.length) * 100}%` }}
+              />
+            </div>
+            <h2>{questions[currentStep].question}</h2>
+            {renderQuestion()}
+            <div className="survey-navigation">
+              {currentStep > 0 && (
+                <button className="nav-button back" onClick={handleBack}>
+                  Back
+                </button>
+              )}
+              <button
+                className="nav-button next"
+                onClick={handleNext}
+                disabled={!answers[questions[currentStep].id] ||
+                  (Array.isArray(answers[questions[currentStep].id]) &&
+                    answers[questions[currentStep].id].length === 0)}
+              >
+                {currentStep === questions.length - 1 ? 'Submit' : 'Next'}
               </button>
-            )}
-            <button
-              className="nav-button next"
-              onClick={handleNext}
-              disabled={!answers[questions[currentStep].id] ||
-                (Array.isArray(answers[questions[currentStep].id]) &&
-                  answers[questions[currentStep].id].length === 0)}
-            >
-              {currentStep === questions.length - 1 ? 'Submit' : 'Next'}
-            </button>
+            </div>
           </div>
         </div>
       </div>
