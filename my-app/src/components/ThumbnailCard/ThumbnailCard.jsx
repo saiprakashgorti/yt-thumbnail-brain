@@ -1,30 +1,15 @@
-// components/ThumbnailCard/ThumbnailCard.jsx
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import 'react-lazy-load-image-component/src/effects/opacity.css';
-import { useStudy } from '../../contexts/StudyContext';
 import './ThumbnailCard.css';
 
-// Helper functions moved before component
-const formatViews = (views) => {
-  if (views >= 1e6) return `${(views / 1e6).toFixed(1)}M`;
-  if (views >= 1e3) return `${(views / 1e3).toFixed(1)}K`;
-  return views.toLocaleString();
-};
-
-const formatDuration = (seconds) => {
-  const mins = Math.floor(seconds / 60);
-  const secs = seconds % 60;
-  return `${mins}:${secs.toString().padStart(2, '0')}`;
-};
-
-const ThumbnailCard = ({ metadata }) => {
+const ThumbnailCard = ({ metadata, onClick }) => {
   const [isLoaded, setIsLoaded] = useState(false);
-  const { setCurrentThumbnail } = useStudy();
 
   const handleClick = () => {
-    setCurrentThumbnail(metadata);
+    if (onClick) {
+      onClick(metadata);
+    }
   };
 
   const handleImageError = (e) => {
@@ -39,53 +24,49 @@ const ThumbnailCard = ({ metadata }) => {
           alt={`Thumbnail for "${metadata.title}"`}
           className={`thumbnail-image ${isLoaded ? 'loaded' : ''}`}
           effect="opacity"
-          placeholder={
-            <div
-              className="image-placeholder"
-              style={{ backgroundColor: '#f0f0f0' }}
-            />
-          }
           afterLoad={() => setIsLoaded(true)}
           onError={handleImageError}
         />
-
-        <div className="thumbnail-overlay">
-          <span className="duration-badge">
-            {formatDuration(metadata.duration)}
-          </span>
-
-          <div className="hover-stats">
-            <span className="stat-item">
-              <span role="img" aria-label="views">👁️</span>
-              {formatViews(metadata.views)}
-            </span>
-            <span className="stat-item">
-              <span role="img" aria-label="calendar">📅</span>
-              {new Date(metadata.uploadDate).getFullYear()}
-            </span>
-          </div>
-        </div>
       </div>
-
       <div className="thumbnail-info">
-        <h3 className="title" title={metadata.title}>
-          {metadata.title}
-        </h3>
-
+        <div className="duration-badge">
+          {formatDuration(metadata.duration)}
+        </div>
+        <h3 className="title" title={metadata.title}>{metadata.title}</h3>
         <div className="metadata-footer">
-          <p className="uploader">{metadata.uploader}</p>
-
-          {metadata.tags && (
-            <div className="tags-container">
-              {metadata.tags.slice(0, 2).map(tag => (
-                <span key={tag} className="tag-pill">#{tag}</span>
-              ))}
-            </div>
-          )}
+          <span className="uploader">{metadata.uploader}</span>
+          <div className="stats">
+            <span className="views">{formatViews(metadata.views)} views</span>
+            <span className="upload-date">{formatDate(metadata.uploadDate)}</span>
+          </div>
         </div>
       </div>
     </article>
   );
+};
+
+const formatViews = (views) => {
+  if (views >= 1e6) return `${(views / 1e6).toFixed(1)}M`;
+  if (views >= 1e3) return `${(views / 1e3).toFixed(1)}K`;
+  return views.toLocaleString();
+};
+
+const formatDuration = (seconds) => {
+  const mins = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  return `${mins}:${secs.toString().padStart(2, '0')}`;
+};
+
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffTime = Math.abs(now - date);
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+  if (diffDays < 7) return `${diffDays}d ago`;
+  if (diffDays < 30) return `${Math.floor(diffDays / 7)}w ago`;
+  if (diffDays < 365) return `${Math.floor(diffDays / 30)}mo ago`;
+  return `${Math.floor(diffDays / 365)}y ago`;
 };
 
 ThumbnailCard.propTypes = {
@@ -96,8 +77,8 @@ ThumbnailCard.propTypes = {
     duration: PropTypes.number.isRequired,
     uploadDate: PropTypes.string.isRequired,
     uploader: PropTypes.string.isRequired,
-    tags: PropTypes.arrayOf(PropTypes.string)
-  }).isRequired
+  }).isRequired,
+  onClick: PropTypes.func,
 };
 
 export default ThumbnailCard;

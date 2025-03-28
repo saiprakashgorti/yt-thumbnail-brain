@@ -1,0 +1,22 @@
+/* src/components/PlayAgainButton.css */
+.play-again-button {
+    background-color: #6366f1; /* Primary color */
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin: 20px auto;
+    display: block;
+  }
+  
+  .play-again-button:hover {
+    background-color: #4f46e5; /* Darker shade for hover */
+  }
+  
+  .play-again-button:focus {
+    outline: none;
+  }
+  

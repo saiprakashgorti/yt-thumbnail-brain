@@ -1,0 +1,29 @@
+.score-progress {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.progress-bar {
+    position: relative;
+    width: 150px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: #00ff00;
+    /* Bright green for progress */
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    color: #fff;
+    font-size: 0.9rem;
+}

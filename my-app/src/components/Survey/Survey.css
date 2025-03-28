@@ -1,0 +1,301 @@
+/* src/components/Survey.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+.survey-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  backdrop-filter: blur(8px);
+}
+
+.survey-modal {
+  background: #141414;
+  border-radius: 24px;
+  width: 90%;
+  max-width: 500px;
+  position: relative;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  z-index: 10000;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.survey-content {
+  padding: 2.5rem 2rem 2rem;
+}
+
+.close-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 50%;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.25rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  z-index: 1;
+  padding: 0;
+  line-height: 1;
+}
+
+.close-button:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+}
+
+.survey-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 24px 24px 0 0;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background: #3b82f6;
+  transition: width 0.3s ease;
+}
+
+.survey-counter {
+  color: #3b82f6;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.survey-modal h2 {
+  color: #ffffff;
+  font-size: 1.25rem;
+  margin: 0 0 1.5rem 0;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+}
+
+.survey-input {
+  width: 100%;
+  min-height: 100px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1rem;
+  color: #ffffff;
+  font-size: 0.9375rem;
+  font-family: inherit;
+  resize: vertical;
+  margin-bottom: 1.5rem;
+  transition: all 0.2s ease;
+}
+
+.survey-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.survey-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  margin-bottom: 1.5rem;
+}
+
+.survey-option {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.survey-option:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.survey-option input[type="checkbox"],
+.survey-option input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #3b82f6;
+}
+
+.survey-option span {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+
+.survey-rating {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  justify-content: center;
+}
+
+.rating-button {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.rating-button:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.rating-button.selected {
+  background: #3b82f6;
+  border-color: #3b82f6;
+  color: #ffffff;
+}
+
+.survey-navigation {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.nav-button {
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 100px;
+  text-align: center;
+}
+
+.nav-button.back {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.nav-button.back:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.nav-button.next {
+  background: #3b82f6;
+  border: none;
+  color: #ffffff;
+}
+
+.nav-button.next:hover:not(:disabled) {
+  background: #2563eb;
+}
+
+.nav-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Scrollbar styling */
+.survey-modal::-webkit-scrollbar {
+  width: 8px;
+}
+
+.survey-modal::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+.survey-modal::-webkit-scrollbar-thumb {
+  background: #333333;
+  border-radius: 4px;
+}
+
+.survey-modal::-webkit-scrollbar-thumb:hover {
+  background: #444444;
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .survey-modal {
+    width: 92%;
+    border-radius: 20px;
+  }
+
+  .survey-content {
+    padding: 1.75rem;
+  }
+
+  .survey-modal h2 {
+    font-size: 1.125rem;
+  }
+
+  .survey-option {
+    padding: 0.75rem;
+  }
+
+  .rating-button {
+    width: 40px;
+    height: 40px;
+  }
+
+  .nav-button {
+    padding: 0.75rem 1.25rem;
+    min-width: 90px;
+  }
+}
+
+@media (max-width: 480px) {
+  .survey-modal {
+    width: 96%;
+    border-radius: 16px;
+  }
+
+  .survey-content {
+    padding: 1.5rem;
+  }
+
+  .survey-option span {
+    font-size: 0.875rem;
+  }
+
+  .rating-button {
+    width: 36px;
+    height: 36px;
+    font-size: 0.875rem;
+  }
+
+  .nav-button {
+    font-size: 0.875rem;
+    padding: 0.625rem 1rem;
+    min-width: 80px;
+  }
+}
