@@ -1,6 +1,6 @@
 // components/Header/Header.jsx
 import React from 'react';
-import Progress from '../Progress/Progress'; // Import the new Progress component
+import ScoreCounter from '../ScoreCounter/ScoreCoutner';
 import './Header.css';
 
 const Header = ({ onClose, showClose, score }) => {
@@ -16,8 +16,13 @@ const Header = ({ onClose, showClose, score }) => {
                         &times;
                     </button>
                 )}
-                <h1 className="header-title">YouTube Thumbnail Analyzer</h1>
-                <Progress score={score} /> {/* Add the Progress component */}
+                <div className="header-left">
+                    <h1 className="header-title">Thumbnail Brain</h1>
+                    <p className="header-subtitle">Analyze YouTube thumbnails with AI</p>
+                </div>
+                <div className="header-right">
+                    <ScoreCounter score={score || 0} />
+                </div>
             </div>
         </header>
     );
