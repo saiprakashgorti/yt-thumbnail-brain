@@ -196,6 +196,13 @@ const Survey = ({ onClose, onComplete, thumbnail }) => {
               alt="Selected thumbnail"
               className="survey-thumbnail"
             />
+            <div className="thumbnail-metadata">
+              <h3 className="metadata-title">{thumbnail.title}</h3>
+              <div className="metadata-channel">{thumbnail.channelTitle}</div>
+              <div className="metadata-views">
+                {new Intl.NumberFormat('en-US', { notation: 'compact' }).format(thumbnail.viewCount)} views
+              </div>
+            </div>
           </div>
           <div className="survey-content">
             <div className="survey-progress">

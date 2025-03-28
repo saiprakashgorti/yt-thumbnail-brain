@@ -1,11 +1,18 @@
 /* components/ThumbnailGrid/ThumbnailGrid.css */
+.thumbnail-grid-container {
+    flex: 1;
+    width: 100%;    
+    margin: 0 auto;
+}
+
 .thumbnail-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: 420px;
+    gap: 10px;
+    padding: 2px;
     width: 100%;
     margin: 0 auto;
-    padding: 1rem;
     height: calc(100vh - 5rem);
     overflow-y: auto;
     justify-content: center;
@@ -77,10 +84,17 @@
 }
 
 @media (max-width: 768px) {
+    .thumbnail-grid-container {
+        width: 98%;
+    }
+
     .thumbnail-grid {
-        grid-template-columns: 1fr;
-        gap: 1.25rem;
-        padding: 0;
+        gap: 24px;
+        padding: 24px;
+    }
+
+    .view-count {
+        font-size: 14px;
     }
 }
 
@@ -99,4 +113,63 @@
     .thumbnail-card {
         margin: 0;
     }
+}
+
+.thumbnail-card {
+    background: rgba(28, 28, 30, 0.92);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
+}
+
+.thumbnail-image-container {
+    position: relative;
+    width: 100%;
+    height: 80%;
+    overflow: hidden;
+    background: #000;
+}
+
+.thumbnail-info {
+    background: transparent;
+    padding: 16px 20px;
+    height: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.title {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: #ffffff;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.4;
+}
+
+.channel-name {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.view-count {
+    font-size: 16px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.6);
+    margin-left: auto;
+    letter-spacing: -0.01em;
 }

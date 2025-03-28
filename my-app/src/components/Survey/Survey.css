@@ -19,8 +19,8 @@
 .survey-modal {
   background: rgba(0, 0, 0, 0.95);
   border-radius: 20px;
-  width: 90%;
-  max-width: 900px;
+  width: 95%;
+  max-width: 1200px;
   position: relative;
   box-shadow: 0 20px 44px rgba(0, 0, 0, 0.3);
   z-index: 10000;
@@ -229,10 +229,9 @@
 }
 
 .survey-thumbnail-container {
-  flex: 1;
+  flex: 1.2;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
   padding: 32px;
   background: rgba(0, 0, 0, 0.4);
   position: relative;
@@ -244,6 +243,33 @@
   border-radius: 12px;
   object-fit: cover;
   transition: transform 0.3s ease;
+}
+
+.thumbnail-metadata {
+  margin-top: 24px;
+  padding: 16px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.metadata-title {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+  margin: 0 0 8px 0;
+}
+
+.metadata-channel {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 4px;
+}
+
+.metadata-views {
+  font-size: 16px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.6);
 }
 
 /* Mobile optimizations */
