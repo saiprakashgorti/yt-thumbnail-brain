@@ -27,18 +27,15 @@ const ThumbnailCard = ({ metadata, onClick }) => {
           afterLoad={() => setIsLoaded(true)}
           onError={handleImageError}
         />
-      </div>
-      <div className="thumbnail-info">
-        <div className="duration-badge">
+        <div className="duration">
           {formatDuration(metadata.duration)}
         </div>
-        <h3 className="title" title={metadata.title}>{metadata.title}</h3>
-        <div className="metadata-footer">
+      </div>
+      <div className="thumbnail-info">
+        <div className="title" title={metadata.title}>{metadata.title}</div>
+        <div className="thumbnail-meta">
           <span className="uploader">{metadata.uploader}</span>
-          <div className="stats">
-            <span className="views">{formatViews(metadata.views)} views</span>
-            <span className="upload-date">{formatDate(metadata.uploadDate)}</span>
-          </div>
+          <span className="views-count">{formatViews(metadata.views)}</span>
         </div>
       </div>
     </article>

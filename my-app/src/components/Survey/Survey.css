@@ -7,60 +7,60 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 9999;
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(30px) saturate(180%);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
 }
 
 .survey-modal {
-  background: #141414;
-  border-radius: 24px;
+  background: rgba(22, 22, 23, 0.95);
+  border-radius: 20px;
   width: 90%;
   max-width: 600px;
   position: relative;
-  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.3), 0 8px 12px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   z-index: 10000;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
   overflow: hidden;
 }
 
 .survey-content {
-  padding: 2rem;
+  padding: 32px;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 24px;
   position: relative;
+  background: transparent;
   border: 0px;
-  box-shadow: 0px 0px 0px 0px rgba(255, 255, 255, 0.08);
+  box-shadow: 0px 0px 0px 0px rgba(255, 255, 255, 0);
 }
 
 .close-button {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: 16px;
+  right: 16px;
   width: 32px;
   height: 32px;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.08);
   border: none;
   border-radius: 50%;
   color: rgba(255, 255, 255, 0.8);
-  font-size: 1.25rem;
+  font-size: 20px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s ease;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   z-index: 10001;
-  padding: 0;
-  line-height: 1;
 }
 
 .close-button:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.12);
   color: #ffffff;
   transform: scale(1.05);
 }
@@ -77,12 +77,12 @@
 
 .progress-bar {
   height: 100%;
-  background: #3b82f6;
-  transition: width 0.3s ease;
+  background: linear-gradient(to right, #ff3b30, #d70015);
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .survey-counter {
-  color: #3b82f6;
+  color: var(--accent-red);
   font-size: 0.875rem;
   font-weight: 600;
   letter-spacing: 0.01em;
@@ -92,33 +92,33 @@
 
 .survey-modal h2 {
   color: #ffffff;
-  font-size: 1.25rem;
-  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
+  font-size: 28px;
   font-weight: 600;
-  line-height: 1.4;
-  letter-spacing: -0.01em;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  margin: 0;
 }
 
 .survey-input {
   width: 100%;
   min-height: 120px;
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  padding: 1rem;
+  border-radius: 14px;
+  padding: 16px;
   color: #ffffff;
-  font-size: 1rem;
-  font-family: inherit;
+  font-size: 16px;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
   resize: vertical;
-  transition: all 0.2s ease;
-  margin: 0;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .survey-input:focus {
   outline: none;
-  border-color: #3b82f6;
-  background: rgba(255, 255, 255, 0.06);
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+  border-color: #ff3b30;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 0 4px rgba(255, 59, 48, 0.15);
 }
 
 .survey-input::placeholder {
@@ -135,17 +135,17 @@
 .survey-option {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  padding: 1rem 1.25rem;
-  background: rgba(255, 255, 255, 0.04);
+  gap: 16px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
+  border-radius: 14px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .survey-option:hover {
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.08);
   border-color: rgba(255, 255, 255, 0.15);
   transform: translateY(-1px);
 }
@@ -154,7 +154,7 @@
 .survey-option input[type="radio"] {
   width: 20px;
   height: 20px;
-  accent-color: #3b82f6;
+  accent-color: var(--accent-red);
 }
 
 .survey-option span {
@@ -175,7 +175,7 @@
   height: 48px;
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.06);
   color: rgba(255, 255, 255, 0.9);
   font-size: 1rem;
   font-weight: 500;
@@ -184,14 +184,14 @@
 }
 
 .rating-button:hover {
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.08);
   border-color: rgba(255, 255, 255, 0.15);
   transform: translateY(-1px);
 }
 
 .rating-button.selected {
-  background: #3b82f6;
-  border-color: #3b82f6;
+  background: var(--accent-red);
+  border-color: var(--accent-red);
   color: #ffffff;
 }
 
@@ -200,39 +200,41 @@
   justify-content: flex-end;
   gap: 1rem;
   margin-top: 1rem;
+  padding-top: 1rem;
 }
 
 .nav-button {
-  padding: 0.75rem 1.5rem;
-  border-radius: 12px;
-  font-size: 0.9375rem;
-  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   min-width: 100px;
   text-align: center;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
 }
 
 .nav-button.back {
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.1);
   color: rgba(255, 255, 255, 0.9);
 }
 
 .nav-button.back:hover {
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.08);
   border-color: rgba(255, 255, 255, 0.15);
   transform: translateY(-1px);
 }
 
 .nav-button.next {
-  background: #3b82f6;
+  background: #ff3b30;
   border: none;
   color: #ffffff;
 }
 
 .nav-button.next:hover:not(:disabled) {
-  background: #2563eb;
+  background: #d70015;
   transform: translateY(-1px);
 }
 

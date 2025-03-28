@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
-import Header from './components/Header/Header';
 import PlayAgainButton from './components/PlayAgainButton/PlayAgainButton';
 import Survey from './components/Survey/Survey';
 import ThumbnailGrid from './components/ThumbnailGrid/ThumbnailGrid';
@@ -40,9 +39,6 @@ function App() {
     setSelectedThumbnail(null);
 
     // Update survey count
-    const newCount = surveyCount + 1;
-    setSurveyCount(newCount);
-    localStorage.setItem('surveyCount', newCount.toString());
 
     const updatedThumbnails = currentThumbnails.filter(t => t !== selectedThumbnail);
     if (updatedThumbnails.length > 0) {
@@ -56,9 +52,17 @@ function App() {
     shuffleAndSetThumbnails(thumbnailData);
   };
 
+  // Calculate progress percentage
+  const progressPercentage = (surveyCount / 10) * 100;
+
   return (
     <div className="app-container">
-      <Header showClose={false} score={surveyCount} />
+      <div className="app-header">
+        <div className="header-content">
+          <h1 className="app-title">Thumbnail Brain</h1>
+          <p className="app-subtitle">Analyze YouTube thumbnails with AI</p>
+        </div>
+      </div>
 
       <main className="main-content">
         <div className="thumbnail-grid-container">

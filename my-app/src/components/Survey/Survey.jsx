@@ -1,5 +1,5 @@
 // src/components/Survey.jsx
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import './Survey.css';
 
 const Survey = ({ onClose, onComplete, thumbnail }) => {
@@ -13,16 +13,6 @@ const Survey = ({ onClose, onComplete, thumbnail }) => {
     additionalFactors: []
   });
 
-  // Get current count from localStorage or initialize to 0
-  const [count, setCount] = useState(() => {
-    const savedCount = localStorage.getItem('surveyCount');
-    return savedCount ? parseInt(savedCount) : 0;
-  });
-
-  // Update localStorage when count changes
-  useEffect(() => {
-    localStorage.setItem('surveyCount', count.toString());
-  }, [count]);
 
   const questions = [
     {
@@ -114,19 +104,9 @@ const Survey = ({ onClose, onComplete, thumbnail }) => {
     });
     localStorage.setItem('surveyAnswers', JSON.stringify(savedAnswers));
 
-    // Increment counter
-    const newCount = count + 1;
-    setCount(newCount);
-    localStorage.setItem('surveyCount', newCount.toString());
 
     // Call the onComplete callback with the answers
     onComplete(answers);
-
-    // If we've reached 10 submissions, show completion message
-    if (newCount >= 10) {
-      alert('Thank you for completing all 10 surveys!');
-    }
-
     // Refresh the page
     window.location.reload();
   };
@@ -210,9 +190,6 @@ const Survey = ({ onClose, onComplete, thumbnail }) => {
               className="progress-bar"
               style={{ width: `${((currentStep + 1) / questions.length) * 100}%` }}
             />
-          </div>
-          <div className="survey-counter">
-            Survey {count + 1} of 10
           </div>
           <h2>{questions[currentStep].question}</h2>
           {renderQuestion()}
