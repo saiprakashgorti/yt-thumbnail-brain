@@ -24,8 +24,24 @@ const WelcomePage = ({ onStart }) => {
                         <li>You'll see 4 YouTube thumbnails at a time</li>
                         <li>Click on any thumbnail that catches your attention</li>
                         <li>Rate the thumbnail based on its effectiveness</li>
-                        <li>Help us understand what makes thumbnails engaging</li>
+                        <li>Complete 10 thumbnails to finish the study</li>
+                        <li>Get rewards and achievements along the way!</li>
                     </ol>
+                </div>
+
+                <div className="welcome-features">
+                    <div className="feature-item">
+                        <span className="feature-icon">🎯</span>
+                        <span className="feature-text">Track your progress</span>
+                    </div>
+                    <div className="feature-item">
+                        <span className="feature-icon">🌟</span>
+                        <span className="feature-text">Earn achievements</span>
+                    </div>
+                    <div className="feature-item">
+                        <span className="feature-icon">💡</span>
+                        <span className="feature-text">Help improve AI</span>
+                    </div>
                 </div>
 
                 <form onSubmit={handleSubmit} className="welcome-form">
@@ -33,16 +49,12 @@ const WelcomePage = ({ onStart }) => {
                         type="text"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        placeholder="Enter your name"
+                        placeholder="Enter your name to begin"
                         className="welcome-input"
                         required
                     />
-                    <button type="submit" className="apple-button">
-                        Let's Play
-                        <svg className="apple-icon" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z" />
-                            <path d="M12 6c-3.314 0-6 2.686-6 6s2.686 6 6 6 6-2.686 6-6-2.686-6-6-6zm0 10c-2.209 0-4-1.791-4-4s1.791-4 4-4 4 1.791 4 4-1.791 4-4 4z" />
-                        </svg>
+                    <button type="submit" className="welcome-button">
+                        Start Study
                     </button>
                 </form>
             </div>
