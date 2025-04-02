@@ -466,3 +466,87 @@
     transform: translateY(-10px);
   }
 }
+
+.survey-metrics {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin: 16px 0;
+}
+
+.metric-item {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 16px;
+  transition: all 0.2s ease;
+}
+
+.metric-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.metric-label {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.metric-description {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+}
+
+.metric-rating {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-start;
+}
+
+.metric-rating .rating-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.metric-rating .rating-button:hover {
+  border-color: var(--accent-red);
+  color: var(--accent-red);
+}
+
+.metric-rating .rating-button.selected {
+  background: var(--accent-red);
+  border-color: var(--accent-red);
+  color: #ffffff;
+}
+
+/* Mobile optimizations for metrics */
+@media (max-width: 768px) {
+  .metric-item {
+    padding: 12px;
+  }
+
+  .metric-label {
+    font-size: 15px;
+  }
+
+  .metric-description {
+    font-size: 13px;
+  }
+
+  .metric-rating .rating-button {
+    width: 36px;
+    height: 36px;
+    font-size: 13px;
+  }
+}

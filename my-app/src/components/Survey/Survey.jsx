@@ -10,7 +10,29 @@ const Survey = ({ onClose, onComplete, thumbnail, currentProgress, totalThumbnai
     emotionalResponse: '',
     relevance: '',
     trustworthiness: '',
-    additionalFactors: []
+    clickMotivation: [],
+    contentType: [],
+    textEffectiveness: '',
+    brandRecognition: '',
+    shareLikelihood: [],
+    improvementSuggestions: '',
+    audienceTargeting: '',
+    thumbnailStyle: [],
+    engagementFactors: [],
+    // New ML-specific fields
+    visualElements: [],
+    colorScheme: '',
+    textElements: [],
+    composition: '',
+    technicalQuality: '',
+    brandElements: [],
+    emotionalTriggers: [],
+    contentClarity: '',
+    thumbnailMetrics: {
+      clickProbability: 0,
+      shareProbability: 0,
+      watchTimeProbability: 0
+    }
   });
   const [showReward, setShowReward] = useState(false);
   const [rewardMessage, setRewardMessage] = useState('');
@@ -19,58 +41,279 @@ const Survey = ({ onClose, onComplete, thumbnail, currentProgress, totalThumbnai
   const questions = [
     {
       id: 'initialImpression',
-      question: "What caught your eye first?",
+      question: "What's your first impression of this thumbnail?",
       type: 'text',
-      placeholder: "Share your first impression..."
+      placeholder: "Share what immediately catches your eye..."
     },
     {
       id: 'attentionGrabbers',
-      question: "Select the elements that stood out",
+      question: "What elements make this thumbnail stand out?",
       type: 'multiselect',
       options: [
-        'Title text',
-        'Thumbnail image',
-        'Channel name',
-        'View count',
-        'Duration',
-        'Upload date'
+        'Bold Colors',
+        'Clear Text',
+        'Facial Expressions',
+        'Contrast',
+        'Professional Quality',
+        'Unique Design'
       ]
     },
     {
       id: 'emotionalResponse',
-      question: "How did this make you feel?",
+      question: "How does this thumbnail make you feel?",
       type: 'select',
       options: [
-        'Curious',
-        'Excited',
+        'Curious to learn more',
+        'Excited to watch',
+        'Trustworthy and reliable',
         'Skeptical',
-        'Neutral',
-        'Other'
+        'Indifferent'
       ]
     },
     {
       id: 'relevance',
-      question: "Rate the relevance to your interests",
+      question: "How well does this thumbnail represent the content you'd expect?",
       type: 'rating',
       max: 5
     },
     {
       id: 'trustworthiness',
-      question: "How trustworthy does this appear?",
+      question: "How credible does this thumbnail appear?",
       type: 'rating',
       max: 5
     },
     {
-      id: 'additionalFactors',
-      question: "What influenced your decision?",
+      id: 'clickMotivation',
+      question: "What would make you click on this thumbnail?",
       type: 'multiselect',
       options: [
-        'Quality',
-        'Professional look',
-        'Clickbait potential',
-        'Clear content',
-        'Brand recognition',
-        'Social proof'
+        'Interesting Title',
+        'Professional Design',
+        'Clear Value Proposition',
+        'Familiar Brand/Channel',
+        'Engaging Visual Elements'
+      ]
+    },
+    {
+      id: 'contentType',
+      question: "What type of content do you expect from this thumbnail?",
+      type: 'multiselect',
+      options: [
+        'Educational/Tutorial',
+        'Entertainment',
+        'News/Information',
+        'Product Review',
+        'How-to Guide'
+      ]
+    },
+    {
+      id: 'textEffectiveness',
+      question: "How effective is the text in this thumbnail?",
+      type: 'select',
+      options: [
+        'Very Clear & Readable',
+        'Somewhat Clear',
+        'Too Small/Unreadable',
+        'Too Much Text',
+        'No Text Needed'
+      ]
+    },
+    {
+      id: 'brandRecognition',
+      question: "Would you recognize this content creator's brand?",
+      type: 'select',
+      options: [
+        'Yes, Very Familiar',
+        'Somewhat Familiar',
+        'Not Familiar',
+        'No Brand Elements'
+      ]
+    },
+    {
+      id: 'shareLikelihood',
+      question: "What would make you share this content?",
+      type: 'multiselect',
+      options: [
+        'Valuable Information',
+        'Entertaining Content',
+        'Professional Quality',
+        'Unique Perspective',
+        'Relatable Topic'
+      ]
+    },
+    {
+      id: 'improvementSuggestions',
+      question: "How could this thumbnail be improved?",
+      type: 'text',
+      placeholder: "Share your suggestions for making it more effective..."
+    },
+    {
+      id: 'audienceTargeting',
+      question: "Who do you think this thumbnail is designed for?",
+      type: 'select',
+      options: [
+        'General Audience',
+        'Specific Niche',
+        'Professional/Expert',
+        'Beginner/Novice',
+        'Not Clear'
+      ]
+    },
+    {
+      id: 'thumbnailStyle',
+      question: "What style of thumbnails do you prefer?",
+      type: 'multiselect',
+      options: [
+        'Clean & Minimal',
+        'Bold & Eye-catching',
+        'Professional & Polished',
+        'Casual & Authentic',
+        'Educational & Clear'
+      ]
+    },
+    {
+      id: 'engagementFactors',
+      question: "What elements increase your engagement with thumbnails?",
+      type: 'multiselect',
+      options: [
+        'Clear Value Proposition',
+        'Emotional Connection',
+        'Professional Quality',
+        'Unique Design',
+        'Familiar Branding'
+      ]
+    },
+    {
+      id: 'visualElements',
+      question: "What visual elements are present in this thumbnail?",
+      type: 'multiselect',
+      options: [
+        'Faces/People',
+        'Text Overlay',
+        'Icons/Symbols',
+        'Background Images',
+        'Graphics/Illustrations',
+        'Product Images',
+        'Screenshots',
+        'Infographics'
+      ]
+    },
+    {
+      id: 'colorScheme',
+      question: "How would you describe the color scheme?",
+      type: 'select',
+      options: [
+        'Warm & Vibrant',
+        'Cool & Professional',
+        'High Contrast',
+        'Monochromatic',
+        'Pastel & Soft',
+        'Dark & Dramatic',
+        'Bright & Bold'
+      ]
+    },
+    {
+      id: 'textElements',
+      question: "What types of text elements are present?",
+      type: 'multiselect',
+      options: [
+        'Title Text',
+        'Subtitle/Description',
+        'Numbers/Statistics',
+        'Call-to-Action',
+        'Channel Name',
+        'Brand Name',
+        'Emojis/Symbols'
+      ]
+    },
+    {
+      id: 'composition',
+      question: "How would you describe the overall composition?",
+      type: 'select',
+      options: [
+        'Balanced & Centered',
+        'Dynamic & Diagonal',
+        'Grid-Based',
+        'Minimalist',
+        'Busy & Detailed',
+        'Rule of Thirds',
+        'Asymmetrical'
+      ]
+    },
+    {
+      id: 'technicalQuality',
+      question: "How would you rate the technical quality?",
+      type: 'select',
+      options: [
+        'Professional & High-Res',
+        'Good Quality',
+        'Average',
+        'Slightly Blurry',
+        'Low Quality',
+        'Over-Processed'
+      ]
+    },
+    {
+      id: 'brandElements',
+      question: "What brand elements are present?",
+      type: 'multiselect',
+      options: [
+        'Logo',
+        'Brand Colors',
+        'Channel Name',
+        'Brand Typography',
+        'Watermark',
+        'Brand Icon',
+        'None'
+      ]
+    },
+    {
+      id: 'emotionalTriggers',
+      question: "What emotional triggers are present?",
+      type: 'multiselect',
+      options: [
+        'Surprise/Shock',
+        'Curiosity',
+        'Humor',
+        'Urgency',
+        'FOMO',
+        'Relatability',
+        'Professional Authority'
+      ]
+    },
+    {
+      id: 'contentClarity',
+      question: "How clear is the content message?",
+      type: 'select',
+      options: [
+        'Very Clear & Direct',
+        'Clear with Some Mystery',
+        'Somewhat Ambiguous',
+        'Unclear Purpose',
+        'Misleading',
+        'Too Complex'
+      ]
+    },
+    {
+      id: 'thumbnailMetrics',
+      question: "Rate the likelihood of different actions (1-5):",
+      type: 'metrics',
+      options: [
+        {
+          id: 'clickProbability',
+          label: 'Clicking on the video',
+          description: 'How likely are you to click on this thumbnail?'
+        },
+        {
+          id: 'shareProbability',
+          label: 'Sharing the content',
+          description: 'How likely are you to share this content?'
+        },
+        {
+          id: 'watchTimeProbability',
+          label: 'Watching the full video',
+          description: 'How likely are you to watch the full video?'
+        }
       ]
     }
   ];
@@ -131,6 +374,41 @@ const Survey = ({ onClose, onComplete, thumbnail, currentProgress, totalThumbnai
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const renderMetrics = (options) => {
+    return (
+      <div className="survey-metrics">
+        {options.map(option => (
+          <div key={option.id} className="metric-item">
+            <div className="metric-label">{option.label}</div>
+            <div className="metric-description">{option.description}</div>
+            <div className="metric-rating">
+              {[1, 2, 3, 4, 5].map(value => (
+                <button
+                  key={value}
+                  type="button"
+                  className={`rating-button ${answers.thumbnailMetrics[option.id] === value ? 'selected' : ''}`}
+                  onClick={() => handleMetricAnswer(option.id, value)}
+                >
+                  {value}
+                </button>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  };
+
+  const handleMetricAnswer = (metricId, value) => {
+    setAnswers(prev => ({
+      ...prev,
+      thumbnailMetrics: {
+        ...prev.thumbnailMetrics,
+        [metricId]: value
+      }
+    }));
   };
 
   const renderQuestion = () => {
@@ -198,6 +476,8 @@ const Survey = ({ onClose, onComplete, thumbnail, currentProgress, totalThumbnai
             ))}
           </div>
         );
+      case 'metrics':
+        return renderMetrics(currentQ.options);
       default:
         return null;
     }
