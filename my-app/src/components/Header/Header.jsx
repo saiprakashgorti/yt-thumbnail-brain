@@ -13,7 +13,7 @@ const Header = ({ onClose, showClose, score }) => {
             <div className="header-right">
                 <div className="surveys-completed">
                     <span>Surveys Completed:</span>
-                    {score} / 10
+                    {score} / 5
                 </div>
                 {showClose && (
                     <button

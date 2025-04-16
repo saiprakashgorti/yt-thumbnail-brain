@@ -1,28 +1,29 @@
-import React, { useEffect, useState } from 'react';
-import './App.css';
-import PlayAgainButton from './components/PlayAgainButton/PlayAgainButton';
-import Survey from './components/Survey/Survey';
-import ThumbnailGrid from './components/ThumbnailGrid/ThumbnailGrid';
-import WelcomePage from './components/WelcomePage/WelcomePage';
-import { useStudy } from './contexts/StudyContext';
+import React, { useEffect, useState } from "react";
+import "./App.css";
+import PlayAgainButton from "./components/PlayAgainButton/PlayAgainButton";
+import Survey from "./components/Survey/Survey";
+import ThumbnailGrid from "./components/ThumbnailGrid/ThumbnailGrid";
+import WelcomePage from "./components/WelcomePage/WelcomePage";
+import { useStudy } from "./contexts/StudyContext";
 
 function App() {
   const [thumbnailData, setThumbnailData] = useState([]);
   const [currentThumbnails, setCurrentThumbnails] = useState([]);
   const [showSurvey, setShowSurvey] = useState(false);
   const [selectedThumbnail, setSelectedThumbnail] = useState(null);
+  const [name, setName] = useState(localStorage.getItem("userName") || "");
   const [showWelcome, setShowWelcome] = useState(() => {
-    return !localStorage.getItem('userName');
+    return !localStorage.getItem("userName");
   });
   const { responses, addResponse, setCurrentThumbnail } = useStudy();
   const [surveyCount, setSurveyCount] = useState(() => {
-    const savedCount = localStorage.getItem('surveyCount');
+    const savedCount = localStorage.getItem("surveyCount");
     return savedCount ? parseInt(savedCount) : 0;
   });
   const [showCompletion, setShowCompletion] = useState(false);
 
   useEffect(() => {
-    const data = require('./assets/data/processed-metadata.json');
+    const data = require("./assets/data/processed-metadata.json");
     setThumbnailData(data);
     shuffleAndSetThumbnails(data);
   }, []);
@@ -46,24 +47,29 @@ function App() {
     // Update survey count
     const newCount = surveyCount + 1;
     setSurveyCount(newCount);
-    localStorage.setItem('surveyCount', newCount.toString());
+    localStorage.setItem("surveyCount", newCount.toString());
 
     // If we've reached 10 surveys, show completion message
-    if (newCount >= 10) {
+    if (newCount >= 5) {
       setShowCompletion(true);
       return;
     }
 
     // Remove the selected thumbnail and add a new one to maintain 4 thumbnails
-    const updatedThumbnails = currentThumbnails.filter(t => t !== selectedThumbnail);
+    const updatedThumbnails = currentThumbnails.filter(
+      (t) => t !== selectedThumbnail
+    );
 
     // Get a new thumbnail that's not already in the current set
-    const availableThumbnails = thumbnailData.filter(t =>
-      !updatedThumbnails.some(existing => existing.id === t.id)
+    const availableThumbnails = thumbnailData.filter(
+      (t) => !updatedThumbnails.some((existing) => existing.id === t.id)
     );
 
     if (availableThumbnails.length > 0) {
-      const newThumbnail = availableThumbnails[Math.floor(Math.random() * availableThumbnails.length)];
+      const newThumbnail =
+        availableThumbnails[
+          Math.floor(Math.random() * availableThumbnails.length)
+        ];
       setCurrentThumbnails([...updatedThumbnails, newThumbnail]);
     } else {
       // If we've run out of thumbnails, shuffle and get new ones
@@ -74,7 +80,7 @@ function App() {
   const handlePlayAgain = () => {
     setSurveyCount(0);
     setShowCompletion(false);
-    localStorage.setItem('surveyCount', '0');
+    localStorage.setItem("surveyCount", "0");
     shuffleAndSetThumbnails(thumbnailData);
   };
 
@@ -82,11 +88,22 @@ function App() {
     setShowWelcome(false);
   };
 
+  const handleNameChange = (name) => {
+    localStorage.setItem("userName", name);
+    setName(name);
+  };
+
   // Calculate progress percentage
-  const progressPercentage = (surveyCount / 10) * 100;
+  const progressPercentage = (surveyCount / 5) * 100;
 
   if (showWelcome) {
-    return <WelcomePage onStart={handleWelcomeComplete} />;
+    return (
+      <WelcomePage
+        onStart={handleWelcomeComplete}
+        name={name}
+        handleNameChange={handleNameChange}
+      />
+    );
   }
 
   if (showCompletion) {
@@ -95,7 +112,9 @@ function App() {
         <div className="completion-content">
           <div className="completion-icon">🎉</div>
           <h2 className="completion-title">Congratulations!</h2>
-          <p className="completion-message">You've completed all 10 thumbnails. Thank you for your contribution!</p>
+          <p className="completion-message">
+            You've completed all 5 thumbnails. Thank you for your contribution!
+          </p>
           <PlayAgainButton onClick={handlePlayAgain} />
         </div>
       </div>
@@ -115,7 +134,7 @@ function App() {
               <div className="surveys-progress-circle"></div>
               <div
                 className="surveys-progress-fill"
-                style={{ '--progress': `${(surveyCount / 10) * 100}%` }}
+                style={{ "--progress": `${(surveyCount / 5) * 100}%` }}
               ></div>
               <div className="surveys-progress-text">{surveyCount}</div>
             </div>
@@ -142,9 +161,10 @@ function App() {
         <Survey
           onClose={() => setShowSurvey(false)}
           onComplete={handleSurveyComplete}
+          name={name}
           thumbnail={selectedThumbnail}
           currentProgress={surveyCount}
-          totalThumbnails={10}
+          totalThumbnails={5}
         />
       )}
     </div>

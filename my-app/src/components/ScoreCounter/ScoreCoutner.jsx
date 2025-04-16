@@ -7,7 +7,7 @@ const ScoreCounter = ({ score }) => {
   return (
     <div className="score-counter">
       <span className="score-label">Surveys Completed:</span>
-      <span className="score-value">{score} / 10</span>
+      <span className="score-value">{score} / 5</span>
     </div>
   );
 };
