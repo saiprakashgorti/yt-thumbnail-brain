@@ -98,11 +98,13 @@ const Survey = ({ onClose, onComplete, name, thumbnail, currentProgress, totalTh
       // Wait for reward animation before completing
       setTimeout(() => {
         onComplete(answers);
+        window.location.reload(); // Reload the page to show new images
       }, 2000);
     } catch (error) {
       console.error("Error adding document: ", error);
       // Still call onComplete even if there's an error
       onComplete(answers);
+      window.location.reload(); // Reload the page even if there's an error
     } finally {
       setIsSubmitting(false);
     }
