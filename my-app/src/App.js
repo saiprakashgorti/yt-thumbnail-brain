@@ -8,6 +8,8 @@ import { useStudy } from "./contexts/StudyContext";
 
 function App() {
   const [thumbnailData, setThumbnailData] = useState([]);
+  const [faceThumbnails, setFaceThumbnails] = useState([]);
+  const [nonFaceThumbnails, setNonFaceThumbnails] = useState([]);
   const [currentThumbnails, setCurrentThumbnails] = useState([]);
   const [showSurvey, setShowSurvey] = useState(false);
   const [selectedThumbnail, setSelectedThumbnail] = useState(null);
@@ -23,14 +25,41 @@ function App() {
   const [showCompletion, setShowCompletion] = useState(false);
 
   useEffect(() => {
-    const data = require("./assets/data/processed-metadata.json");
-    setThumbnailData(data);
-    shuffleAndSetThumbnails(data);
-  }, []);
+    const regularData = require("./assets/data/processed-metadata.json");
+    const faceData = require("./assets/data/face_metadata.json");
+    const nonFaceData = require("./assets/data/non-face_metadata.json");
 
-  const shuffleAndSetThumbnails = (data) => {
-    const shuffled = [...data].sort(() => 0.5 - Math.random());
-    setCurrentThumbnails(shuffled.slice(0, 4));
+    setThumbnailData(regularData);
+    setFaceThumbnails(faceData);
+    setNonFaceThumbnails(nonFaceData);
+
+    // Pass surveyCount to properly initialize thumbnails
+    shuffleAndSetThumbnails(faceData, nonFaceData, surveyCount);
+  }, [surveyCount]);
+
+  const shuffleAndSetThumbnails = (faceData, nonFaceData, count) => {
+    // For first 3 surveys: 3 face thumbnails + 1 non-face thumbnail
+    // After 3 surveys: all 4 non-face thumbnails
+    let selectedThumbnails = [];
+
+    if (count < 3) {
+      // Shuffle face thumbnails and take 3
+      const shuffledFace = [...faceData].sort(() => 0.5 - Math.random());
+      const facePicks = shuffledFace.slice(0, 3);
+
+      // Shuffle non-face thumbnails and take 1
+      const shuffledNonFace = [...nonFaceData].sort(() => 0.5 - Math.random());
+      const nonFacePick = shuffledNonFace.slice(0, 1);
+
+      // Combine and shuffle again for random positioning
+      selectedThumbnails = [...facePicks, ...nonFacePick].sort(() => 0.5 - Math.random());
+    } else {
+      // After 3 surveys, only show non-face thumbnails
+      const shuffledNonFace = [...nonFaceData].sort(() => 0.5 - Math.random());
+      selectedThumbnails = shuffledNonFace.slice(0, 4);
+    }
+
+    setCurrentThumbnails(selectedThumbnails);
   };
 
   const handleThumbnailClick = (thumbnail) => {
@@ -49,39 +78,21 @@ function App() {
     setSurveyCount(newCount);
     localStorage.setItem("surveyCount", newCount.toString());
 
-    // If we've reached 10 surveys, show completion message
+    // If we've reached 5 surveys, show completion message
     if (newCount >= 5) {
       setShowCompletion(true);
       return;
     }
 
-    // Remove the selected thumbnail and add a new one to maintain 4 thumbnails
-    const updatedThumbnails = currentThumbnails.filter(
-      (t) => t !== selectedThumbnail
-    );
-
-    // Get a new thumbnail that's not already in the current set
-    const availableThumbnails = thumbnailData.filter(
-      (t) => !updatedThumbnails.some((existing) => existing.id === t.id)
-    );
-
-    if (availableThumbnails.length > 0) {
-      const newThumbnail =
-        availableThumbnails[
-        Math.floor(Math.random() * availableThumbnails.length)
-        ];
-      setCurrentThumbnails([...updatedThumbnails, newThumbnail]);
-    } else {
-      // If we've run out of thumbnails, shuffle and get new ones
-      shuffleAndSetThumbnails(thumbnailData);
-    }
+    // Use the updated survey count to determine which thumbnails to show
+    shuffleAndSetThumbnails(faceThumbnails, nonFaceThumbnails, newCount);
   };
 
   const handlePlayAgain = () => {
     setSurveyCount(0);
     setShowCompletion(false);
     localStorage.setItem("surveyCount", "0");
-    shuffleAndSetThumbnails(thumbnailData);
+    shuffleAndSetThumbnails(faceThumbnails, nonFaceThumbnails, 0);
   };
 
   const handleWelcomeComplete = () => {
