@@ -10,8 +10,8 @@ const Survey = ({
   name,
   thumbnail,
   currentProgress,
-  totalThumbnails = 5,
-  shownThumbnails // <-- Pass this prop: array of 4 thumbnail objects shown to the user
+  totalThumbnails = 6, // changed from 5 to 6
+  shownThumbnails
 }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState({});
@@ -254,13 +254,20 @@ const Survey = ({
       // Wait for reward animation before completing
       setTimeout(() => {
         onComplete(answers);
-        window.location.reload(); // Reload the page to show new images
+        // Only reload if not the last survey
+        if (currentProgress + 1 < totalThumbnails) {
+          window.location.reload(); // Reload the page to show new images
+        }
+        // else: do not reload, allow completion overlay to show
       }, 2000);
     } catch (error) {
       console.error("Error adding document: ", error);
       // Still call onComplete even if there's an error
       onComplete(answers);
-      window.location.reload(); // Reload the page even if there's an error
+      if (currentProgress + 1 < totalThumbnails) {
+        window.location.reload(); // Reload the page even if there's an error
+      }
+      // else: do not reload, allow completion overlay to show
     } finally {
       setIsSubmitting(false);
     }

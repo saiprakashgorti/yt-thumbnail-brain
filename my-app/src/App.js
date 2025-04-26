@@ -78,8 +78,8 @@ function App() {
     setSurveyCount(newCount);
     localStorage.setItem("surveyCount", newCount.toString());
 
-    // If we've reached 5 surveys, show completion message
-    if (newCount >= 5) {
+    // If we've reached 6 surveys, show completion message
+    if (newCount >= 6) {
       setShowCompletion(true);
       return;
     }
@@ -91,8 +91,9 @@ function App() {
   const handlePlayAgain = () => {
     setSurveyCount(0);
     setShowCompletion(false);
+    setShowWelcome(true); // Show welcome page again
     localStorage.setItem("surveyCount", "0");
-    shuffleAndSetThumbnails(faceThumbnails, nonFaceThumbnails, 0);
+    // shuffleAndSetThumbnails(faceThumbnails, nonFaceThumbnails, 0); // No need, will be set after welcome
   };
 
   const handleWelcomeComplete = () => {
@@ -105,7 +106,7 @@ function App() {
   };
 
   // Calculate progress percentage
-  const progressPercentage = (surveyCount / 5) * 100;
+  const progressPercentage = (surveyCount / 6) * 100;
 
   if (showWelcome) {
     return (
@@ -124,7 +125,7 @@ function App() {
           <div className="completion-icon">🎉</div>
           <h2 className="completion-title">Congratulations!</h2>
           <p className="completion-message">
-            You've completed all 5 thumbnails. Thank you for your contribution!
+            You've completed all 6 thumbnails. Thank you for your contribution!
           </p>
           <PlayAgainButton onClick={handlePlayAgain} />
         </div>
@@ -145,7 +146,7 @@ function App() {
               <div className="surveys-progress-circle"></div>
               <div
                 className="surveys-progress-fill"
-                style={{ "--progress": `${(surveyCount / 5) * 100}%` }}
+                style={{ "--progress": `${(surveyCount / 6) * 100}%` }}
               ></div>
               <div className="surveys-progress-text">{surveyCount}</div>
             </div>
@@ -175,7 +176,7 @@ function App() {
           name={name}
           thumbnail={selectedThumbnail}
           currentProgress={surveyCount}
-          totalThumbnails={5}
+          totalThumbnails={6}
           shownThumbnails={currentThumbnails.map(t => t.id)}
         />
       )}
