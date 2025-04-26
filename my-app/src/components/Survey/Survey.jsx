@@ -4,7 +4,15 @@ import React, { useState } from 'react';
 import { db } from '../../firebase/db';
 import './Survey.css';
 
-const Survey = ({ onClose, onComplete, name, thumbnail, currentProgress, totalThumbnails = 5 }) => {
+const Survey = ({
+  onClose,
+  onComplete,
+  name,
+  thumbnail,
+  currentProgress,
+  totalThumbnails = 5,
+  shownThumbnails // <-- Pass this prop: array of 4 thumbnail objects shown to the user
+}) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState({});
   const [showReward, setShowReward] = useState(false);
@@ -209,7 +217,6 @@ const Survey = ({ onClose, onComplete, name, thumbnail, currentProgress, totalTh
         if (q.type === "checkbox" && Array.isArray(answer)) {
           const idx = answer.indexOf("Other");
           if (idx !== -1 && answers[`${q.id}_other`]) {
-            // Replace "Other" with "Other - <text>"
             answer = [
               ...answer.slice(0, idx),
               `Other - ${answers[`${q.id}_other`]}`,
@@ -225,6 +232,11 @@ const Survey = ({ onClose, onComplete, name, thumbnail, currentProgress, totalTh
           }
         }
       });
+
+      // shownThumbnails is now an array of thumbnailFile strings
+      if (shownThumbnails && Array.isArray(shownThumbnails)) {
+        submission.shownThumbnails = shownThumbnails;
+      }
 
       await addDoc(collection(db, "crowdsourcing"), submission);
 

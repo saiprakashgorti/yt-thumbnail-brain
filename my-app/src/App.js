@@ -68,7 +68,7 @@ function App() {
     if (availableThumbnails.length > 0) {
       const newThumbnail =
         availableThumbnails[
-          Math.floor(Math.random() * availableThumbnails.length)
+        Math.floor(Math.random() * availableThumbnails.length)
         ];
       setCurrentThumbnails([...updatedThumbnails, newThumbnail]);
     } else {
@@ -165,6 +165,7 @@ function App() {
           thumbnail={selectedThumbnail}
           currentProgress={surveyCount}
           totalThumbnails={5}
+          shownThumbnails={currentThumbnails.map(t => t.id)}
         />
       )}
     </div>
