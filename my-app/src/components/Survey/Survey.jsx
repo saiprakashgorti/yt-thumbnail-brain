@@ -1,52 +1,77 @@
 // src/components/Survey.jsx
+import { addDoc, collection } from "firebase/firestore";
 import React, { useState } from 'react';
-import { collection, addDoc } from "firebase/firestore";
 import { db } from '../../firebase/db';
 import './Survey.css';
 
 const Survey = ({ onClose, onComplete, name, thumbnail, currentProgress, totalThumbnails = 5 }) => {
   const [currentStep, setCurrentStep] = useState(0);
-  const [answers, setAnswers] = useState({
-    firstImpression: '',
-    colorImpact: '',
-    designElements: '',
-    faceImpact: '',
-    titleMatch: '',
-  });
+  const [answers, setAnswers] = useState({});
   const [showReward, setShowReward] = useState(false);
   const [rewardMessage, setRewardMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const questions = [
     {
-      id: 'firstImpression',
-      question: "What first caught your eye about the thumbnail you chose?",
-      type: 'text',
-      placeholder: "Describe what initially drew your attention..."
+      id: 'colorFeatures',
+      question: "Which color-related feature influenced your choice?",
+      type: 'checkbox',
+      options: [
+        { label: "Bright Colors & High Contrast", explanation: "Vibrant hues with strong light-versus-dark contrast" },
+        { label: "Color Tone & Gradients", explanation: "Smooth blends or shifts between colors" },
+        { label: "Colour Contrast", explanation: "Use of complementary or opposing colors" },
+        { label: "None of these", explanation: "No color aspect affected my decision" },
+        { label: "Other", explanation: "A different color-related feature" }
+      ]
     },
     {
-      id: 'colorImpact',
-      question: "How did the colors or overall color tone affect your decision?",
-      type: 'text',
-      placeholder: "Explain how the colors influenced your choice..."
+      id: 'textGraphicFeatures',
+      question: "Which text or graphic element influenced your choice?",
+      type: 'checkbox',
+      options: [
+        { label: "Overlaid Text & Graphic Elements", explanation: "Words or icons laid over the image" },
+        { label: "Typography & Font Style", explanation: "Distinct font or lettering style" },
+        { label: "Title – Phrases or Number", explanation: "Catchy words or numbers or short phrases" },
+        { label: "Branding & Logo Cues", explanation: "Channel or company logo for credibility" },
+        { label: "None of these", explanation: "No text/graphic feature mattered" },
+        { label: "Other", explanation: "A different text/graphic feature" }
+      ]
     },
     {
-      id: 'designElements',
-      question: "What text features (like fonts, size, or style) or design elements (like shapes, icons, or layouts) stood out most to you in the thumbnail?",
-      type: 'text',
-      placeholder: "Describe the text and design elements that caught your attention..."
+      id: 'faceFeatures',
+      question: "Which face-related feature influenced your choice?",
+      type: 'checkbox',
+      options: [
+        { label: "Recognizable Faces & Familiarity", explanation: "A known person you recognized" },
+        { label: "Trustworthiness & Persona", explanation: "Person’s look seemed credible or likable" },
+        { label: "Human Expressions", explanation: "Emotional facial expressions shown" },
+        { label: "No faces present", explanation: "No faces were included at all" },
+        { label: "Other", explanation: "A different face-related aspect" }
+      ]
     },
     {
-      id: 'faceImpact',
-      question: "Did you notice any faces on the thumbnail? If so, how did that affect your choice? If no faces were present, did that influence how you felt about it?",
-      type: 'text',
-      placeholder: "Share your thoughts about the presence or absence of faces..."
+      id: 'compositionFeatures',
+      question: "Which compositional or contextual cue influenced your choice?",
+      type: 'checkbox',
+      options: [
+        { label: "Composition & Layout", explanation: "Arrangement and balance of elements" },
+        { label: "Mystery & Suspense Cues", explanation: "Hidden or blurred parts creating intrigue" },
+        { label: "Incomplete Info Presence", explanation: "Partial visuals that raise questions" },
+        { label: "Thematic/Subject-Matter Indicators", explanation: "Visual hints about the video topic" },
+        { label: "None of these", explanation: "No layout or context cue mattered" },
+        { label: "Other", explanation: "A different compositional feature" }
+      ]
     },
     {
-      id: 'titleMatch',
-      question: "In your opinion, how well did the thumbnail's image match or support the video title?",
-      type: 'text',
-      placeholder: "Explain how well the thumbnail and title worked together..."
+      id: 'overallMatch',
+      question: "Overall, how well did the thumbnail support the video title/content?",
+      type: 'radio',
+      options: [
+        { label: "Very well", explanation: "Thumbnail clearly matches the title" },
+        { label: "Somewhat", explanation: "Thumbnail partly reflects the content" },
+        { label: "Not at all", explanation: "Thumbnail doesn’t reflect the content" },
+        { label: "Other", explanation: "A different level of match" }
+      ]
     }
   ];
 
@@ -55,6 +80,101 @@ const Survey = ({ onClose, onComplete, name, thumbnail, currentProgress, totalTh
       ...prev,
       [questions[currentStep].id]: value
     }));
+  };
+
+  const handleOtherTextChange = (questionId, value) => {
+    setAnswers(prev => ({
+      ...prev,
+      [`${questionId}_other`]: value
+    }));
+  };
+
+  const renderQuestion = () => {
+    const currentQ = questions[currentStep];
+    if (currentQ.type === 'checkbox') {
+      const selected = Array.isArray(answers[currentQ.id]) ? answers[currentQ.id] : [];
+      return (
+        <div className="survey-options">
+          {currentQ.options.map(option => (
+            <React.Fragment key={option.label}>
+              <label className="survey-option">
+                <input
+                  type="checkbox"
+                  name={currentQ.id}
+                  value={option.label}
+                  checked={selected.includes(option.label)}
+                  onChange={e => {
+                    let newValue;
+                    if (e.target.checked) {
+                      newValue = [...selected, option.label];
+                    } else {
+                      newValue = selected.filter(l => l !== option.label);
+                    }
+                    handleAnswer(newValue);
+                  }}
+                />
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  <span className="option-label">{option.label}</span>
+                  <span className="option-explanation" style={{ color: "rgba(255,255,255,0.7)", fontSize: "14px", fontWeight: 400 }}>{option.explanation}</span>
+                </div>
+              </label>
+              {option.label === "Other" && selected.includes("Other") && (
+                <textarea
+                  className="survey-input"
+                  placeholder="Please specify..."
+                  value={answers[`${currentQ.id}_other`] || ""}
+                  onChange={e => handleOtherTextChange(currentQ.id, e.target.value)}
+                />
+              )}
+            </React.Fragment>
+          ))}
+        </div>
+      );
+    }
+    if (currentQ.type === 'radio') {
+      return (
+        <div className="survey-options">
+          {currentQ.options.map(option => (
+            <React.Fragment key={option.label}>
+              <label className="survey-option">
+                <input
+                  type="radio"
+                  name={currentQ.id}
+                  value={option.label}
+                  checked={answers[currentQ.id] === option.label}
+                  onChange={() => handleAnswer(option.label)}
+                />
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  <span className="option-label">{option.label}</span>
+                  <span className="option-explanation" style={{ color: "rgba(255,255,255,0.7)", fontSize: "14px", fontWeight: 400 }}>{option.explanation}</span>
+                </div>
+              </label>
+              {option.label === "Other" && answers[currentQ.id] === "Other" && (
+                <textarea
+                  className="survey-input"
+                  placeholder="Please specify..."
+                  value={answers[`${currentQ.id}_other`] || ""}
+                  onChange={e => handleOtherTextChange(currentQ.id, e.target.value)}
+                />
+              )}
+            </React.Fragment>
+          ))}
+        </div>
+      );
+    }
+    return null;
+  };
+
+  const isCurrentQuestionAnswered = () => {
+    const currentQ = questions[currentStep];
+    const answer = answers[currentQ.id];
+    if (currentQ.type === 'checkbox') {
+      return Array.isArray(answer) && answer.length > 0;
+    }
+    if (currentQ.type === 'radio') {
+      return !!answer;
+    }
+    return false;
   };
 
   const handleNext = () => {
@@ -77,12 +197,36 @@ const Survey = ({ onClose, onComplete, name, thumbnail, currentProgress, totalTh
 
     setIsSubmitting(true);
     try {
-      await addDoc(collection(db, "user_study"), {
+      // Build submission object with only relevant answers
+      const submission = {
         name,
         thumbnailId: thumbnail.id,
         timestamp: new Date().toISOString(),
-        ...answers
+      };
+      questions.forEach(q => {
+        let answer = answers[q.id];
+        // If "Other" is selected and text is present, replace/add "Other - <text>"
+        if (q.type === "checkbox" && Array.isArray(answer)) {
+          const idx = answer.indexOf("Other");
+          if (idx !== -1 && answers[`${q.id}_other`]) {
+            // Replace "Other" with "Other - <text>"
+            answer = [
+              ...answer.slice(0, idx),
+              `Other - ${answers[`${q.id}_other`]}`,
+              ...answer.slice(idx + 1)
+            ];
+          }
+          submission[q.id] = answer;
+        } else if (q.type === "radio") {
+          if (answer === "Other" && answers[`${q.id}_other`]) {
+            submission[q.id] = `Other - ${answers[`${q.id}_other`]}`;
+          } else if (answer !== undefined) {
+            submission[q.id] = answer;
+          }
+        }
       });
+
+      await addDoc(collection(db, "crowdsourcing"), submission);
 
       // Show reward message based on progress
       const newProgress = currentProgress + 1;
@@ -108,86 +252,6 @@ const Survey = ({ onClose, onComplete, name, thumbnail, currentProgress, totalTh
     } finally {
       setIsSubmitting(false);
     }
-  };
-
-  const renderQuestion = () => {
-    const currentQ = questions[currentStep];
-
-    switch (currentQ.type) {
-      case 'text':
-        return (
-          <textarea
-            value={answers[currentQ.id]}
-            onChange={(e) => handleAnswer(e.target.value)}
-            placeholder={currentQ.placeholder}
-            className="survey-input"
-          />
-        );
-      case 'multiselect':
-        return (
-          <div className="survey-options">
-            {currentQ.options.map(option => (
-              <label key={option} className="survey-option">
-                <input
-                  type="checkbox"
-                  checked={answers[currentQ.id].includes(option)}
-                  onChange={(e) => {
-                    const newValue = e.target.checked
-                      ? [...answers[currentQ.id], option]
-                      : answers[currentQ.id].filter(item => item !== option);
-                    handleAnswer(newValue);
-                  }}
-                />
-                <span>{option}</span>
-              </label>
-            ))}
-          </div>
-        );
-      case 'select':
-        return (
-          <div className="survey-options">
-            {currentQ.options.map(option => (
-              <label key={option} className="survey-option">
-                <input
-                  type="radio"
-                  name={currentQ.id}
-                  value={option}
-                  checked={answers[currentQ.id] === option}
-                  onChange={(e) => handleAnswer(e.target.value)}
-                />
-                <span>{option}</span>
-              </label>
-            ))}
-          </div>
-        );
-      case 'rating':
-        return (
-          <div className="survey-rating">
-            {[...Array(currentQ.max)].map((_, i) => (
-              <button
-                key={i + 1}
-                type="button"
-                className={`rating-button ${answers[currentQ.id] === i + 1 ? 'selected' : ''}`}
-                onClick={() => handleAnswer(i + 1)}
-              >
-                {i + 1}
-              </button>
-            ))}
-          </div>
-        );
-      default:
-        return null;
-    }
-  };
-
-  const isCurrentQuestionAnswered = () => {
-    const currentQ = questions[currentStep];
-    const answer = answers[currentQ.id];
-
-    if (Array.isArray(answer)) {
-      return answer.length > 0;
-    }
-    return answer !== '';
   };
 
   return (
